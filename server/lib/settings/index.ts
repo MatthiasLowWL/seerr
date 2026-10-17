@@ -158,6 +158,7 @@ export interface MainSettings {
   locale: string;
   youtubeUrl: string;
   versionCheck: boolean;
+  allowOwnMediaDeletion: boolean;
 }
 
 export interface ProxySettings {
@@ -219,6 +220,7 @@ interface FullPublicSettings extends PublicSettings {
   youtubeUrl: string;
   versionCheck: boolean;
   plexClientIdentifier: string;
+  allowOwnMediaDeletion: boolean;
 }
 
 export interface NotificationAgentConfig {
@@ -436,6 +438,7 @@ class Settings {
         locale: 'en',
         youtubeUrl: '',
         versionCheck: true,
+        allowOwnMediaDeletion: false,
       },
       plex: {
         name: '',
@@ -745,6 +748,7 @@ class Settings {
       youtubeUrl: this.data.main.youtubeUrl,
       versionCheck: this.data.main.versionCheck,
       plexClientIdentifier: this.data.clientId,
+      allowOwnMediaDeletion: this.data.main.allowOwnMediaDeletion,
     };
   }
 

@@ -3,6 +3,7 @@ import Badge from '@app/components/Common/Badge';
 import Button from '@app/components/Common/Button';
 import CachedImage from '@app/components/Common/CachedImage';
 import ConfirmButton from '@app/components/Common/ConfirmButton';
+import DeleteOwnMediaButton from '@app/components/DeleteOwnMediaButton';
 import RequestModal from '@app/components/RequestModal';
 import StatusBadge from '@app/components/StatusBadge';
 import useDeepLinks from '@app/hooks/useDeepLinks';
@@ -782,6 +783,19 @@ const RequestItem = ({ request, revalidateList }: RequestItemProps) => {
                 <XMarkIcon />
                 <span>{intl.formatMessage(messages.cancelRequest)}</span>
               </ConfirmButton>
+            )}
+          {requestData.status !== MediaRequestStatus.PENDING &&
+            requestData.status !== MediaRequestStatus.DECLINED &&
+            requestData.requestedBy.id === user?.id && (
+              <DeleteOwnMediaButton
+                media={requestData.media}
+                title={isMovie(title) ? title.title : title.name}
+                onUpdate={() => {
+                  revalidateList();
+                  mutate('/api/v1/request/count');
+                }}
+                className="w-full"
+              />
             )}
         </div>
       </div>

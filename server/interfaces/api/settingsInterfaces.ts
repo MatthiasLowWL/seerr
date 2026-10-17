@@ -51,6 +51,7 @@ export interface PublicSettingsResponse {
   youtubeUrl: string;
   versionCheck: boolean;
   plexClientIdentifier: string;
+  allowOwnMediaDeletion: boolean;
 }
 
 export interface CacheItem {

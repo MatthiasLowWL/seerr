@@ -7361,6 +7361,33 @@ paths:
       responses:
         '204':
           description: Successfully removed media item
+  /media/{mediaId}/own:
+    delete:
+      summary: Remove own requested media
+      description: |
+        Fork feature. Removes a title from Radarr/Sonarr (files included) and clears its requests
+        when every request on the title belongs to the calling user and the
+        `allowOwnMediaDeletion` setting is enabled. Users with the `MANAGE_REQUESTS` permission
+        bypass the ownership check.
+      tags:
+        - media
+      parameters:
+        - in: path
+          name: mediaId
+          description: Media ID
+          required: true
+          example: '1'
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully removed media item
+        '403':
+          description: Feature disabled, title not requested by the user, or also requested by other users
+        '404':
+          description: Media not found
+        '409':
+          description: No Radarr/Sonarr server configured for this title
   /media/{mediaId}/{status}:
     post:
       summary: Update media status

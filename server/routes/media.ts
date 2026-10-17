@@ -11,6 +11,7 @@ import type {
   MediaResultsResponse,
   MediaWatchDataResponse,
 } from '@server/interfaces/api/mediaInterfaces';
+import { deleteOwnMedia } from '@server/lib/ownMediaDeletion';
 import { Permission } from '@server/lib/permissions';
 import { getSettings } from '@server/lib/settings';
 import logger from '@server/logger';
@@ -304,6 +305,9 @@ mediaRoutes.delete(
     }
   }
 );
+
+// Fork feature: users may remove titles that only they requested
+mediaRoutes.delete('/:id/own', deleteOwnMedia);
 
 mediaRoutes.get<{ id: string }, MediaWatchDataResponse>(
   '/:id/watch_data',

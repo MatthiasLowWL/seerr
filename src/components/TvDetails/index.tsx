@@ -15,6 +15,7 @@ import PlayButton from '@app/components/Common/PlayButton';
 import StatusBadgeMini from '@app/components/Common/StatusBadgeMini';
 import Tag from '@app/components/Common/Tag';
 import Tooltip from '@app/components/Common/Tooltip';
+import DeleteOwnMediaButton from '@app/components/DeleteOwnMediaButton';
 import ExternalLinkBlock from '@app/components/ExternalLinkBlock';
 import IssueModal from '@app/components/IssueModal';
 import ManageSlideOver from '@app/components/ManageSlideOver';
@@ -686,6 +687,13 @@ const TvDetails = ({ tv }: TvDetailsProps) => {
             media={data?.mediaInfo}
             isShowComplete={isComplete}
             is4kShowComplete={is4kComplete}
+          />
+          <DeleteOwnMediaButton
+            media={data.mediaInfo}
+            title={data.name}
+            onUpdate={() => revalidate()}
+            className="ml-2 first:ml-0"
+            compact
           />
           {(data.mediaInfo?.status === MediaStatus.AVAILABLE ||
             data.mediaInfo?.status === MediaStatus.PARTIALLY_AVAILABLE ||
