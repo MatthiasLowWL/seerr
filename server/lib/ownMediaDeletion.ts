@@ -50,20 +50,34 @@ const removeFromService = async (media: Media, is4k: boolean) => {
     );
   }
 
+  // Prefer the server this title was actually sent to. Server ids start at 0,
+  // so check for null/undefined explicitly rather than truthiness.
   const specificServiceId = is4k ? media.serviceId4k : media.serviceId;
   if (
-    specificServiceId &&
+    specificServiceId !== null &&
+    specificServiceId !== undefined &&
     specificServiceId >= 0 &&
     serviceSettings?.id !== specificServiceId
   ) {
     if (isMovie) {
-      serviceSettings = settings.radarr.find(
-        (radarr) => radarr.id === specificServiceId
-      );
+      serviceSettings =
+        settings.radarr.find((radarr) => radarr.id === specificServiceId) ??
+        serviceSettings;
     } else {
-      serviceSettings = settings.sonarr.find(
-        (sonarr) => sonarr.id === specificServiceId
-      );
+      serviceSettings =
+        settings.sonarr.find((sonarr) => sonarr.id === specificServiceId) ??
+        serviceSettings;
+    }
+  }
+
+  // No default and no recorded server: if exactly one server of this kind and
+  // quality exists there is no ambiguity, so use it.
+  if (!serviceSettings) {
+    const candidates = (isMovie ? settings.radarr : settings.sonarr).filter(
+      (server) => server.is4k === is4k
+    );
+    if (candidates.length === 1) {
+      serviceSettings = candidates[0];
     }
   }
 
